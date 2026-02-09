@@ -20,6 +20,8 @@ def read_matches():
         print("Error: Failed to parse tba_matches.json")
         return None
 
+def quickSort(lih):
+    if max(lih)
 
 if __name__ == "__main__":
     ranked_teams = read_matches()
