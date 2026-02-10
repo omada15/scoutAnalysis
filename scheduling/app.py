@@ -198,19 +198,7 @@ with tab1:
         st.subheader("Export Options")
     else:
         st.warning("No data to display. Please ensure fetched_data.json exists.")
-#sam luvs bill gates and goes copilot everywhere
 
-
-
-
-
-
-
-
-
-
-
-#no bill gates here
 df = pd.DataFrame(pd.read_csv("avgs.csv"))
 
 criteria_mapping = {
