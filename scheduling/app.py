@@ -112,7 +112,6 @@ criteria_mapping = {
     "Climb": "endgameAvgClimbPoints",
 }
 
-import time
 
 extra_df = pd.DataFrame(pd.read_csv("custom.csv"))
 
@@ -199,8 +198,58 @@ with tab1:
         st.subheader("Export Options")
     else:
         st.warning("No data to display. Please ensure fetched_data.json exists.")
+#sam luvs bill gates and goes copilot everywhere
 
+
+
+
+
+
+
+
+
+
+
+#no bill gates here
+df = pd.DataFrame(pd.read_csv("avgs.csv"))
+
+criteria_mapping = {
+    "auto points": "avgAutoFuel",
+    "auto climb": "autoClimbPercent",
+    "transition": "avgTransitionFuel",
+    "first shift": "avgFirstActiveHubFuel",
+    "second shift": "avgSecondActiveHubFuel",
+    "Endgame Points": "avgEndgameFuel",
+    "Climb": "endgameAvgClimbPoints",
+}
+
+import time
+
+extra_df = pd.DataFrame(pd.read_csv("custom.csv"))
+
+
+def update( m1, m2, m3, m4,m5,m6):
+    row = {
+        "multiplier1": m1,
+        "multiplier2": m2,
+        "multiplier3": m3,
+        "multiplier4": m4,
+        "multiplier5": m5,
+        "multiplier6": m6
+
+    }
+    extra_df = pd.read_csv("custom.csv")
+    extra_df = pd.concat([extra_df, pd.DataFrame([row])], ignore_index=True)
+    extra_df.to_csv("custom.csv", index=False)
+
+
+max_rows = len(df[["teamNumber"]])
+
+with tab1:
+    col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
+    st.write("work in progress")
 with tab2:
+
     col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
     label = "multiplier"
     with col1:
@@ -250,3 +299,4 @@ with tab2:
         disabled=["widgets"],
         key="chud"
     )
+    
