@@ -6,10 +6,17 @@ from PIL import Image
 from io import BytesIO
 import requests
 from st_image_button import st_image_button
+from ranking import read_matches
+
+ranked = read_matches()
+
+
 def load_image_from_url(url):
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
     return img
+
+
 COLUMN_ORDER = [
     "eventName",
     "team",
@@ -52,6 +59,7 @@ NUMERIC_GRADIENT_COLUMNS = [
     "endgameFuel",
 ]
 
+
 def loadAndFlattenData(filePath):
     try:
         with open(filePath, "r") as f:
@@ -79,28 +87,6 @@ def loadAndFlattenData(filePath):
         return []
 
 
-def color_numeric_cell(val, max_val):
-    """Generate a color gradient for numeric values."""
-    if not isinstance(val, (int, float)) or max_val == 0:
-        return "background-color: white"
-
-    ratio = min(max(val / max_val, 0), 1)
-    r = int(255 - (75 * ratio))
-    g = int(180 + (75 * ratio))
-    return f"background-color: rgb({r}, {g}, 180)"
-
-
-def color_boolean_cell(val):
-    """Generate a color for boolean values."""
-    if val is True:
-        return "background-color: #d4edda"  # Light Green
-    elif val is False:
-        return "background-color: #f8d7da"  # Light Red
-    else:
-        return "background-color: white"
-
-
-# Streamlit App
 st.set_page_config(page_title="Raw Scouting Data", layout="wide")
 st.title("📊 Raw Scouting Data Viewer")
 data_path = os.path.join(os.path.dirname(__file__), "..", "fetched_data.json")
@@ -108,8 +94,6 @@ allRows = loadAndFlattenData(data_path)
 
 tab1, tab2 = st.tabs(["Data", "ranker"])
 df = pd.DataFrame(pd.read_csv("avgs.csv"))
-
-
 
 with tab1:
     if allRows:
@@ -141,7 +125,8 @@ with tab1:
         col1, col2, col3 = st.columns(3)
         col1.metric("Total Records", len(df))
         col2.metric(
-            "Unique Teams", df["teamNumber"].nunique() if "teamNumber" in df.columns else 0
+            "Unique Teams",
+            df["teamNumber"].nunique() if "teamNumber" in df.columns else 0,
         )
         col3.metric(
             "Unique Matches",
@@ -176,19 +161,7 @@ with tab1:
         st.subheader("Export Options")
     else:
         st.warning("No data to display. Please ensure fetched_data.json exists.")
-#sam luvs bill gates and goes copilot everywhere
-
-
-
-
-
-
-
-
-
-
-
-#no bill gates here
+df = pd.DataFrame(pd.read_csv("avgs.csv"))
 criteria_mapping = {
     "auto points": "avgAutoFuel",
     "auto climb": "autoClimbPercent",
@@ -199,19 +172,17 @@ criteria_mapping = {
     "Climb": "endgameAvgClimbPoints",
 }
 
-
 extra_df = pd.DataFrame(pd.read_csv("custom.csv"))
 
 
-def update( m1, m2, m3, m4,m5,m6):
+def update(m1, m2, m3, m4, m5, m6):
     row = {
         "multiplier1": m1,
         "multiplier2": m2,
         "multiplier3": m3,
         "multiplier4": m4,
         "multiplier5": m5,
-        "multiplier6": m6
-
+        "multiplier6": m6,
     }
     extra_df = pd.read_csv("custom.csv")
     extra_df = pd.concat([extra_df, pd.DataFrame([row])], ignore_index=True)
@@ -219,11 +190,21 @@ def update( m1, m2, m3, m4,m5,m6):
 
 
 max_rows = len(df[["teamNumber"]])
+criteria_mapping = {
+    "rank": "rank",
+    "auto points": "avgAutoFuel",
+    "auto climb": "autoClimbPercent",
+    "transition": "avgTransitionFuel",
+    "first shift": "avgFirstActiveHubFuel",
+    "second shift": "avgSecondActiveHubFuel",
+    "Endgame Points": "avgEndgameFuel",
+    "Climb": "endgameAvgClimbPoints",
+}
 
 extra_df = pd.DataFrame(pd.read_csv("custom.csv"))
 
-#img = load_image_from_url("")
-def update( m1, m2, m3, m4,m5,m6):
+
+def update(m1, m2, m3, m4, m5, m6):
     row = {
         "multiplier1": m1,
         "multiplier2": m2,
@@ -231,7 +212,6 @@ def update( m1, m2, m3, m4,m5,m6):
         "multiplier4": m4,
         "multiplier5": m5,
         "multiplier6": 1,
-
     }
     extra_df = pd.read_csv("custom.csv")
     extra_df = pd.concat([extra_df, pd.DataFrame([row])], ignore_index=True)
@@ -247,44 +227,58 @@ with tab2:
     col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
     label = "multiplier"
     if "Pickability" in df.columns:
-        df["Pickability"] = pd.to_numeric(df["Pickability"], errors='coerce').fillna(0)
+        df["Pickability"] = pd.to_numeric(df["Pickability"], errors="coerce").fillna(0)
     else:
         df["Pickability"] = 0.0
     with col1:
         if st.button("$\\Large\\text{🥭}$"):
 
             update(
-                st.session_state["multiplier_1"],
-                st.session_state["multiplier_2"],
-                st.session_state["multiplier_3"],
-                st.session_state["multiplier_4"],
-                st.session_state["multiplier_5"],
-                st.session_state["multiplier_6"]
+                st.session_state.get("multiplier_1", "1"),
+                st.session_state.get("multiplier_2", "1"),
+                st.session_state.get("multiplier_3", "1"),
+                st.session_state.get("multiplier_4", "1"),
+                st.session_state.get("multiplier_5", "1"),
+                st.session_state.get("multiplier_6", "1"),
             )
-            extra_df = pd.DataFrame(pd.read_csv("custom.csv"))
-            df["avgAutoFuel"]=df["avgAutoFuel"].astype(object) * extra_df.iloc[-1][f"multiplier1"]
-            df["avgTransitionFuel"]=df["avgTransitionFuel"].astype(object) * extra_df.iloc[-1][f"multiplier2"]
-            df["avgFirstActiveHubFuel"]=df["avgFirstActiveHubFuel"].astype(object) * extra_df.iloc[-1][f"multiplier3"]
-            df["avgSecondActiveHubFuel"]=df["avgSecondActiveHubFuel"].astype(object) * extra_df.iloc[-1][f"multiplier4"]
-            df["avgEndgameFuel"]=df["avgEndgameFuel"].astype(object) * extra_df.iloc[-1][f"multiplier5"]
-            df["avgTotalFuel"]=df["avgTotalFuel"].astype(object) * extra_df.iloc[-1][f"multiplier6"]
-            df["Pickability"] = df["avgEndgameFuel"].astype(object)+df["avgSecondActiveHubFuel"].astype(object)+df["avgSecondActiveHubFuel"].astype(object)+df["avgFirstActiveHubFuel"].astype(object)+df["avgTransitionFuel"].astype(object)+df["avgAutoFuel"].astype(object)
-    with col3:
-        selector_1_multiplier = st.number_input(label,value =1.0, key="multiplier_1")
-    with col4:
-        selector_2_multiplier = st.number_input(label,value =1.0, key="multiplier_2")
-    with col5:
-        selector_3_multiplier = st.number_input(label,value =1.0, key="multiplier_3")
-    with col6:
-        selector_4_multiplier = st.number_input(label,value =1.0, key="multiplier_4")
-    with col7:
-        selector_4_multiplier = st.number_input(label,value =1.0, key="multiplier_5")
-    with col8:
-        selector_4_multiplier = st.number_input(label,value =1.0, key="multiplier_6")
+            st.rerun()
 
+    # Place text inputs in the columns
+    with col2:
+        st.number_input("Auto", key="multiplier_1", value="1")
+    with col3:
+        st.number_input("Trans", key="multiplier_2", value="1")
+    with col4:
+        st.number_input("Shift 1", key="multiplier_3", value="1")
+    with col5:
+        st.number_input("Shift 2", key="multiplier_4", value="1")
+    with col6:
+        st.number_input("Endgame", key="multiplier_5", value="1")
+    with col7:
+        st.number_input("Total", key="multiplier_6", value="1")
+
+    # 2. Prepare the Display DataFrame
+    # We create a copy so we don't modify the source data incorrectly
+    display_df = df.copy()
+
+    # 3. Calculate Ranks without saving to the original 'df'
+    def get_rank(team_num):
+        try:
+            # Clean team number and look up in the 'ranked' list from ranking.py
+            clean_team = int(float(str(team_num).replace(".0", "")))
+            return ranked.index(clean_team) + 1
+        except (ValueError, IndexError):
+            return None
+
+    # Insert 'Live Rank' at the beginning of the chart
+    display_df.insert(0, "Live Rank", display_df["teamNumber"].apply(get_rank))
+
+    # 4. Render the Chart
+    st.subheader("Ranked Performance Overview")
     st.data_editor(
-        df,
-        column_order=[
+        display_df,
+        column_order=(
+            "Live Rank",
             "teamNumber",
             "entries",
             "Pickability",
@@ -293,11 +287,10 @@ with tab2:
             "avgFirstActiveHubFuel",
             "avgSecondActiveHubFuel",
             "avgEndgameFuel",
-            "avgTotalFuel"
-        ],
-        width = "stretch",
+            "avgTotalFuel",
+        ),
         hide_index=True,
-        disabled=["widgets"],
-        key="chud"
+        use_container_width=True,
+        disabled=True,  # Keeps it read-only
+        key="rank_editor_view",
     )
-    
