@@ -233,7 +233,7 @@ with tab2:
     else:
         df["Pickability"] = 0.0
     with col1:
-        if st.button("$\\Large\\text{🥭}$"):
+        if st_image_button("","dog.jpeg", width="50px"):
 
             update(
                 st.session_state.get("multiplier_1", 1.00),
@@ -250,8 +250,15 @@ with tab2:
             df["avgSecondActiveHubFuel"]=df["avgSecondActiveHubFuel"].astype(float) * extra_df.iloc[-1][f"multiplier4"]
             df["avgEndgameFuel"]=df["avgEndgameFuel"].astype(float) * extra_df.iloc[-1][f"multiplier5"]
             df["avgTotalFuel"]=df["avgTotalFuel"].astype(float) * extra_df.iloc[-1][f"multiplier6"]
-            df["Pickability"] = df["avgEndgameFuel"].astype(float)+df["avgSecondActiveHubFuel"].astype(float)+df["avgSecondActiveHubFuel"].astype(float)+df["avgFirstActiveHubFuel"].astype(float)+df["avgTransitionFuel"].astype(float)+df["avgAutoFuel"].astype(float)
-
+        updated_list = ["multiplier1","multiplier2","multiplier3","multiplier4","multiplier5","multiplier6"]
+        categories = ["avgAutoFuel","avgTransitionFuel","avgFirstActiveHubFuel","avgSecondActiveHubFuel","avgEndgameFuel","avgTotalFuel"]
+        pickability_list = []
+        for i in range(0,6):
+            if extra_df.iloc[-1][updated_list[i]] == 1:
+                pass
+            else:
+                pickability_list.append(extra_df.iloc[-1][updated_list[i]]*df[categories[i]].astype(float))
+        df["Pickability"] = sum(pickability_list)
     with col2:
         st.number_input("Auto", key="multiplier_1", value=1.00)
     with col3:
