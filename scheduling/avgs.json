@@ -1,32 +1,42 @@
 {
     "teamNumber": [
-        5813
+        5813,
+        1153
     ],
     "entries": [
-        9
+        9,
+        4
     ],
     "avgAutoFuel": [
-        18.78
+        18.78,
+        25.25
     ],
     "avgTransitionFuel": [
-        8.56
+        8.56,
+        11.0
     ],
     "avgFirstActiveHubFuel": [
-        26.78
+        26.78,
+        31.5
     ],
     "avgSecondActiveHubFuel": [
-        32.56
+        32.56,
+        24.75
     ],
     "avgEndgameFuel": [
-        13.22
+        13.22,
+        17.5
     ],
     "avgTotalFuel": [
-        99.89
+        99.89,
+        110.0
     ],
     "endgameAvgClimbPoints": [
-        8.33
+        8.33,
+        5.0
     ],
     "autoClimbPercent": [
-        44.44
+        44.44,
+        0.0
     ]
 }

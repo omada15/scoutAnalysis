@@ -236,12 +236,12 @@ with tab2:
         if st.button("$\\Large\\text{🥭}$"):
 
             update(
-                st.session_state.get("multiplier_1", 1),
-                st.session_state.get("multiplier_2", 1),
-                st.session_state.get("multiplier_3", 1),
-                st.session_state.get("multiplier_4", 1),
-                st.session_state.get("multiplier_5", 1),
-                st.session_state.get("multiplier_6", 1),
+                st.session_state.get("multiplier_1", 1.00),
+                st.session_state.get("multiplier_2", 1.00),
+                st.session_state.get("multiplier_3", 1.00),
+                st.session_state.get("multiplier_4", 1.00),
+                st.session_state.get("multiplier_5", 1.00),
+                st.session_state.get("multiplier_6", 1.00),
             )
             extra_df = pd.DataFrame(pd.read_csv("custom.csv"))
             df["avgAutoFuel"]=df["avgAutoFuel"].astype(float) * extra_df.iloc[-1][f"multiplier1"]
@@ -253,17 +253,17 @@ with tab2:
             df["Pickability"] = df["avgEndgameFuel"].astype(float)+df["avgSecondActiveHubFuel"].astype(float)+df["avgSecondActiveHubFuel"].astype(float)+df["avgFirstActiveHubFuel"].astype(float)+df["avgTransitionFuel"].astype(float)+df["avgAutoFuel"].astype(float)
 
     with col2:
-        st.number_input("Auto", key="multiplier_1", value=1)
+        st.number_input("Auto", key="multiplier_1", value=1.00)
     with col3:
-        st.number_input("Trans", key="multiplier_2", value=1)
+        st.number_input("Trans", key="multiplier_2", value=1.00)
     with col4:
-        st.number_input("Shift 1", key="multiplier_3", value=1)
+        st.number_input("Shift 1", key="multiplier_3", value=1.00)
     with col5:
-        st.number_input("Shift 2", key="multiplier_4", value=1)
+        st.number_input("Shift 2", key="multiplier_4", value=1.00)
     with col6:
-        st.number_input("Endgame", key="multiplier_5", value=1)
+        st.number_input("Endgame", key="multiplier_5", value=1.00)
     with col7:
-        st.number_input("Total", key="multiplier_6", value=1)
+        st.number_input("Total", key="multiplier_6", value=1.00)
 
 
     display_df = df.copy()
