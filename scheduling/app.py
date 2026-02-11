@@ -2,7 +2,14 @@ import streamlit as st
 import pandas as pd
 import json
 import os
-
+from PIL import Image
+from io import BytesIO
+import requests
+from st_image_button import st_image_button
+def load_image_from_url(url):
+    response = requests.get(url)
+    img = Image.open(BytesIO(response.content))
+    return img
 COLUMN_ORDER = [
     "eventName",
     "team",
@@ -182,7 +189,6 @@ with tab1:
 
 
 #no bill gates here
-df = pd.DataFrame(pd.read_csv("avgs.csv"))
 criteria_mapping = {
     "auto points": "avgAutoFuel",
     "auto climb": "autoClimbPercent",
@@ -213,21 +219,10 @@ def update( m1, m2, m3, m4,m5,m6):
 
 
 max_rows = len(df[["teamNumber"]])
-criteria_mapping = {
-    "auto points": "avgAutoFuel",
-    "auto climb": "autoClimbPercent",
-    "transition": "avgTransitionFuel",
-    "first shift": "avgFirstActiveHubFuel",
-    "second shift": "avgSecondActiveHubFuel",
-    "Endgame Points": "avgEndgameFuel",
-    "Climb": "endgameAvgClimbPoints",
-}
-
-import time
 
 extra_df = pd.DataFrame(pd.read_csv("custom.csv"))
 
-
+#img = load_image_from_url("")
 def update( m1, m2, m3, m4,m5,m6):
     row = {
         "multiplier1": m1,
@@ -235,7 +230,7 @@ def update( m1, m2, m3, m4,m5,m6):
         "multiplier3": m3,
         "multiplier4": m4,
         "multiplier5": m5,
-        "multiplier6": m6
+        "multiplier6": 1,
 
     }
     extra_df = pd.read_csv("custom.csv")
@@ -247,13 +242,17 @@ max_rows = len(df[["teamNumber"]])
 
 with tab1:
     col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
-    st.write("work in progress")
 with tab2:
-
+    df = pd.read_csv("avgs.csv")
     col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
     label = "multiplier"
+    if "Pickability" in df.columns:
+        df["Pickability"] = pd.to_numeric(df["Pickability"], errors='coerce').fillna(0)
+    else:
+        df["Pickability"] = 0.0
     with col1:
-        if st.button("run"):
+        if st.button("$\\Large\\text{🥭}$"):
+
             update(
                 st.session_state["multiplier_1"],
                 st.session_state["multiplier_2"],
@@ -269,32 +268,34 @@ with tab2:
             df["avgSecondActiveHubFuel"]=df["avgSecondActiveHubFuel"].astype(object) * extra_df.iloc[-1][f"multiplier4"]
             df["avgEndgameFuel"]=df["avgEndgameFuel"].astype(object) * extra_df.iloc[-1][f"multiplier5"]
             df["avgTotalFuel"]=df["avgTotalFuel"].astype(object) * extra_df.iloc[-1][f"multiplier6"]
-
+            df["Pickability"] = df["avgEndgameFuel"].astype(object)+df["avgSecondActiveHubFuel"].astype(object)+df["avgSecondActiveHubFuel"].astype(object)+df["avgFirstActiveHubFuel"].astype(object)+df["avgTransitionFuel"].astype(object)+df["avgAutoFuel"].astype(object)
     with col3:
-        selector_1_multiplier = st.text_input(label, key="multiplier_1")
+        selector_1_multiplier = st.number_input(label,value =1.0, key="multiplier_1")
     with col4:
-        selector_2_multiplier = st.text_input(label, key="multiplier_2")
+        selector_2_multiplier = st.number_input(label,value =1.0, key="multiplier_2")
     with col5:
-        selector_3_multiplier = st.text_input(label, key="multiplier_3")
+        selector_3_multiplier = st.number_input(label,value =1.0, key="multiplier_3")
     with col6:
-        selector_4_multiplier = st.text_input(label, key="multiplier_4")
+        selector_4_multiplier = st.number_input(label,value =1.0, key="multiplier_4")
     with col7:
-        selector_4_multiplier = st.text_input(label, key="multiplier_5")
+        selector_4_multiplier = st.number_input(label,value =1.0, key="multiplier_5")
     with col8:
-        selector_4_multiplier = st.text_input(label, key="multiplier_6")
+        selector_4_multiplier = st.number_input(label,value =1.0, key="multiplier_6")
 
     st.data_editor(
         df,
-        column_order=(
+        column_order=[
             "teamNumber",
             "entries",
+            "Pickability",
             "avgAutoFuel",
             "avgTransitionFuel",
             "avgFirstActiveHubFuel",
             "avgSecondActiveHubFuel",
             "avgEndgameFuel",
             "avgTotalFuel"
-        ),
+        ],
+        width = "stretch",
         hide_index=True,
         disabled=["widgets"],
         key="chud"
