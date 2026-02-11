@@ -204,7 +204,7 @@ criteria_mapping = {
 extra_df = pd.DataFrame(pd.read_csv("custom.csv"))
 
 
-def update(m1, m2, m3, m4, m5, m6):
+def update( m1, m2, m3, m4,m5,m6):
     row = {
         "multiplier1": m1,
         "multiplier2": m2,
@@ -212,6 +212,8 @@ def update(m1, m2, m3, m4, m5, m6):
         "multiplier4": m4,
         "multiplier5": m5,
         "multiplier6": 1,
+
+
     }
     extra_df = pd.read_csv("custom.csv")
     extra_df = pd.concat([extra_df, pd.DataFrame([row])], ignore_index=True)
@@ -241,8 +243,15 @@ with tab2:
                 st.session_state.get("multiplier_5", 1),
                 st.session_state.get("multiplier_6", 1),
             )
+            extra_df = pd.DataFrame(pd.read_csv("custom.csv"))
+            df["avgAutoFuel"]=df["avgAutoFuel"].astype(float) * extra_df.iloc[-1][f"multiplier1"]
+            df["avgTransitionFuel"]=df["avgTransitionFuel"].astype(float) * extra_df.iloc[-1][f"multiplier2"]
+            df["avgFirstActiveHubFuel"]=df["avgFirstActiveHubFuel"].astype(float) * extra_df.iloc[-1][f"multiplier3"]
+            df["avgSecondActiveHubFuel"]=df["avgSecondActiveHubFuel"].astype(float) * extra_df.iloc[-1][f"multiplier4"]
+            df["avgEndgameFuel"]=df["avgEndgameFuel"].astype(float) * extra_df.iloc[-1][f"multiplier5"]
+            df["avgTotalFuel"]=df["avgTotalFuel"].astype(float) * extra_df.iloc[-1][f"multiplier6"]
+            df["Pickability"] = df["avgEndgameFuel"].astype(float)+df["avgSecondActiveHubFuel"].astype(float)+df["avgSecondActiveHubFuel"].astype(float)+df["avgFirstActiveHubFuel"].astype(float)+df["avgTransitionFuel"].astype(float)+df["avgAutoFuel"].astype(float)
 
-    # Place text inputs in the columns
     with col2:
         st.number_input("Auto", key="multiplier_1", value=1)
     with col3:
@@ -256,23 +265,18 @@ with tab2:
     with col7:
         st.number_input("Total", key="multiplier_6", value=1)
 
-    # 2. Prepare the Display DataFrame
-    # We create a copy so we don't modify the source data incorrectly
+
     display_df = df.copy()
 
-    # 3. Calculate Ranks without saving to the original 'df'
     def get_rank(team_num):
         try:
-            # Clean team number and look up in the 'ranked' list from ranking.py
             clean_team = int(float(str(team_num).replace(".0", "")))
             return ranked.index(clean_team) + 1
         except (ValueError, IndexError):
             return None
 
-    # Insert 'Live Rank' at the beginning of the chart
     display_df.insert(0, "Live Rank", display_df["teamNumber"].apply(get_rank))
 
-    # 4. Render the Chart
     st.subheader("Ranked Performance Overview")
     st.data_editor(
         display_df,
@@ -290,6 +294,6 @@ with tab2:
         ),
         hide_index=True,
         use_container_width=True,
-        disabled=True,  # Keeps it read-only
-        key="rank_editor_view",
+        disabled=True,  
+        key="chud",
     )
