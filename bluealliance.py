@@ -3,13 +3,14 @@ import json
 
 apiKey = "CVI6FjGLtHQbCUwrb7GYAUGGWkKV7w115MdXgjnQzNSijNGV3IDkgOuRxogOVLuy"
 event = "2025necmp2"
-method = "rankings"  # matches rankings
-url = f"https://www.thebluealliance.com/api/v3/event/{event}/{method}"
+method1 = "rankings"  # matches rankings
+
 
 headers = {"X-TBA-Auth-Key": apiKey}
 
 
 def fetch(method):
+    url = f"https://www.thebluealliance.com/api/v3/event/{event}/{method}"
     print(f"Fetching: {url}")
     response = requests.get(url, headers=headers)
 
@@ -23,4 +24,4 @@ def fetch(method):
 
 
 if __name__ == "__main__":
-    fetch(method)
+    fetch(method1)
