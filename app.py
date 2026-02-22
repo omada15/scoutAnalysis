@@ -5,14 +5,13 @@ import os
 from PIL import Image
 from io import BytesIO
 import requests
-from st_image_button import st_image_button
 from ranking import read_matches
 from bluealliance import fetch as bfetch
 from fetchfromdb import fetch as ffetch
 from pieceviewer import processTeamAverages
 from json_to_csv import convert_avgs_to_csv
-
-#ffetch()
+from st_image_button import st_image_button
+ffetch()
 bfetch("matches")
 bfetch("rankings")
 with open("avgs.json", "w") as goy:

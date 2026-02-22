@@ -21,4 +21,4 @@ def fetch(method):
 
 
 if __name__ == "__main__":
-    fetch(method)
+    fetch(method1)
