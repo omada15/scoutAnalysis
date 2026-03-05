@@ -182,10 +182,10 @@ with tab0:
     except FileNotFoundError:
         st.error("File 'jsons/avgs.csv' not found. Please check the file path.")
 
-    with st.sidebar:
-        st.header("Match Selection")
-        red_sel = st.multiselect("Red Alliance", team_list, max_selections=3)
-        blue_sel = st.multiselect("Blue Alliance", team_list, max_selections=3)
+    
+    st.header("Match Selection")
+    red_sel = st.multiselect("Red Alliance", team_list, max_selections=3)
+    blue_sel = st.multiselect("Blue Alliance", team_list, max_selections=3)
 
     def get_alliance_table(selected_teams):
         if not selected_teams:
@@ -229,18 +229,19 @@ with tab1:
 
         if "teamNumber" in df.columns:
             all_teams = sorted(df["teamNumber"].unique().astype(str))
-
+            for i,m in enumerate(all_teams):
+                all_teams[i] = str(m)
+            print(all_teams)
             if "selected_teams" not in st.session_state:
                 st.session_state.selected_teams = all_teams
 
             if st.sidebar.button("Select All Teams", key="diddy"):
-                st.session_state.selected_teams = teamsList
+                st.session_state.selected_teams = all_teams
 
             selected_teams = st.sidebar.multiselect(
                 "Filter by Team",
                 options=all_teams,
                 key="team_selector",
-                default=st.session_state.selected_teams,
             )
 
             df = df[df["teamNumber"].astype(str).isin(selected_teams)]

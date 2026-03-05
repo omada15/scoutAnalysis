@@ -3,9 +3,7 @@ import requests
 import json
 import traceback
 import sys
-from datetime import datetime
 import time
-
 
 def getValue(field):
     if isinstance(field, dict):
@@ -37,10 +35,6 @@ except json.JSONDecodeError:
 
 
 def fetchDataByTeamNum(teamNum, allData=None):
-    """
-    Recursively fetch all data for a specific team number.
-    Traverses {teamNum}/{match}/... structure
-    """
     if allData is None:
         allData = {}
 
@@ -84,10 +78,6 @@ def fetchDataByTeamNum(teamNum, allData=None):
 
 
 def fetchAllDataRecursive(path="", allData=None):
-    """
-    Recursively fetch all data from nested collections.
-    Assumes structure: {teamNum}/{match}/...
-    """
     if allData is None:
         allData = {}
 
@@ -148,9 +138,6 @@ def getTeamList(path):
 
 
 def cleanFirestoreData(data):
-    """
-    Recursively removes Firestore type wrappers (e.g., 'integerValue', 'stringValue').
-    """
     if isinstance(data, dict):
         typeKeys = {
             "integerValue",
