@@ -1,0 +1,6 @@
+pandas==2.3.3
+firebase==4.0.1
+firebase_admin==7.1.0
+numpy==2.4.1
+requests==2.32.5
+streamlit-image-button==0.2.2.13
