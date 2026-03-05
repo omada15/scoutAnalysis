@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import time
 import json
-import os
 from PIL import Image
 from io import BytesIO
 import requests
@@ -14,6 +13,7 @@ from json_to_csv import convert_avgs_to_csv
 from st_image_button import st_image_button
 from teamPredictor import main as predict
 from stdTeamPredictor import predict as stdpred
+import matplotlib
 
 # ffetch()
 bfetch("matches")
@@ -108,8 +108,8 @@ st.title("📊 Raw Scouting Data Viewer")
 data_path = "jsons/fetchedData.json"
 allRows = loadAndFlattenData(data_path)
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs(
-    ["data", "ranker", "matches", "STD predictor", "Game Predictor"]
+tab0, tab1, tab2, tab3, tab4, tab5 = st.tabs(
+    ["individual", "data", "ranker", "matches", "STD predictor", "Game Predictor"]
 )
 df = pd.DataFrame(pd.read_csv("jsons/avgs.csv"))
 
@@ -158,9 +158,47 @@ def update(m1, m2, m3, m4, m5, m6):
     extra_df = pd.concat([extra_df, pd.DataFrame([row])], ignore_index=True)
     extra_df.to_csv("mult.csv", index=False)
 
-
 max_rows = len(df[["teamNumber"]])
 
+with tab0:
+    st.set_page_config(layout="wide", page_title="Alliance Strategy")
+
+    try:
+        df = pd.read_csv("jsons/avgs.csv")
+        df["teamNumber"] = df["teamNumber"].astype(str)
+        team_list = sorted(df["teamNumber"].unique(), key=int)
+    except FileNotFoundError:
+        st.error("File 'jsons/avgs.csv' not found. Please check the file path.")
+
+    with st.sidebar:
+        st.header("Match Selection")
+        red_sel = st.multiselect("Red Alliance", team_list, max_selections=3)
+        blue_sel = st.multiselect("Blue Alliance", team_list, max_selections=3)
+
+    def get_alliance_table(selected_teams):
+        if not selected_teams:
+            return None
+        return df[df["teamNumber"].isin(selected_teams)].copy()
+
+    def display_alliance_section(alliance_data, color_label, theme_color):
+        if alliance_data is not None:
+            # Replicating the "Categorized Header" look from the screenshot
+            # Using Markdown for the category headers to simulate the spanned rows
+            st.markdown(f"### {color_label} Alliance")
+
+            header_col1, header_col2 = st.columns([1, 4])
+            with header_col1:
+                st.markdown(f":{theme_color}[**AUTO**]")
+            with header_col2:
+                st.markdown(f":{theme_color}[**TELEOP & ENDGAME**]")
+
+            st.dataframe(alliance_data, hide_index=True, use_container_width=True)
+
+            total_fuel = alliance_data["avgTotalFuel"].sum()
+            st.metric(f"{color_label} Total Avg", f"{total_fuel:.2f}")
+            st.divider()
+    display_alliance_section(get_alliance_table(red_sel), "Red", "red")
+    display_alliance_section(get_alliance_table(blue_sel), "Blue", "blue")
 with tab1:
     if allRows:
         df = pd.DataFrame(allRows)
@@ -354,7 +392,7 @@ with tab3:
         ["g", "h", "i", "j", "k", "l"],
         ["m", "n", "o", "p", "q", "r"],
     ]
-    matchOrder = [0, 1, 2, 1, 2, 1, 0]
+    matchOrder = [0, 1, 2, 1, 2, 1, 0, 1, 2, 0, 1, 2, 1, 2, 0]
 
     def getStackedCell(items, colors=None):
         """Generates a stacked HTML cell to replicate the layout."""
@@ -446,7 +484,7 @@ with tab3:
                     checkLabels.append(f"Scouter: {actualScouterName}")
                     checkColors.append("#636300")  # Yellow
                 else:
-                    checkLabels.append(f"Missing: {actualScouterName}" )
+                    checkLabels.append(f"Missing: {assignedName}")
                     checkColors.append("#8B0000")  # Red
 
             r1, r2, r3, r4 = st.columns([1, 2, 2, 2])
@@ -470,7 +508,7 @@ with tab3:
                 )
 
             st.divider()
-    
+
     if __name__ == "__main__":
         main()
 
@@ -499,9 +537,7 @@ with tab4:
         dictRank = {}
         for i, m in enumerate(ranked, start=1):
             dictRank[f"{i}"] = m
-        st.dataframe(
-            key="chud2dictRank", data=dictRank, height=500
-        )
+        st.dataframe(key="chud2dictRank", data=dictRank, height=500)
 
     with col2:
         stdpred(
