@@ -9,7 +9,7 @@ from ranking import read_matches
 from bluealliance import fetch as bfetch
 from fetchfromdb import fetch as ffetch
 from avgs import processTeamAverages
-from json_to_csv import convert_avgs_to_csv
+from jsonToCsv import convert_avgs_to_csv
 from st_image_button import st_image_button
 from teamPredictor import main as predict
 from stdTeamPredictor import predict as stdpred
@@ -44,8 +44,7 @@ COLUMN_ORDER = [
     "autoUnderTrench",
     "autoClimbed",
     "transitionFuel",
-    "transitionCollected"
-    "shift1HubActive",
+    "transitionCollected" "shift1HubActive",
     "shift1Fuel",
     "shift1HoardedFuel",
     "shift1Collected",
@@ -182,7 +181,6 @@ with tab0:
     except FileNotFoundError:
         st.error("File 'jsons/avgs.csv' not found. Please check the file path.")
 
-    
     st.header("Match Selection")
     red_sel = st.multiselect("Red Alliance", team_list, max_selections=3)
     blue_sel = st.multiselect("Blue Alliance", team_list, max_selections=3)
@@ -194,8 +192,6 @@ with tab0:
 
     def display_alliance_section(alliance_data, color_label, theme_color):
         if alliance_data is not None:
-            # Replicating the "Categorized Header" look from the screenshot
-            # Using Markdown for the category headers to simulate the spanned rows
             st.markdown(f"### {color_label} Alliance")
 
             header_col1, header_col2 = st.columns([1, 4])
@@ -204,7 +200,7 @@ with tab0:
             with header_col2:
                 st.markdown(f":{theme_color}[**TELEOP & ENDGAME**]")
 
-            st.dataframe(alliance_data, hide_index=True, use_container_width=True)
+            st.dataframe(alliance_data, hide_index=True, )
 
             total_fuel = alliance_data["avgTotalFuel"].sum()
             st.metric(f"{color_label} Total Avg", f"{total_fuel:.2f}")
@@ -229,19 +225,17 @@ with tab1:
 
         if "teamNumber" in df.columns:
             all_teams = sorted(df["teamNumber"].unique().astype(str))
-            for i,m in enumerate(all_teams):
-                all_teams[i] = str(m)
-            print(all_teams)
             if "selected_teams" not in st.session_state:
                 st.session_state.selected_teams = all_teams
 
             if st.sidebar.button("Select All Teams", key="diddy"):
-                st.session_state.selected_teams = all_teams
+                st.session_state.selected_teams = teamsList
 
             selected_teams = st.sidebar.multiselect(
                 "Filter by Team",
                 options=all_teams,
                 key="team_selector",
+                default=st.session_state.selected_teams
             )
 
             df = df[df["teamNumber"].astype(str).isin(selected_teams)]
@@ -535,15 +529,15 @@ with tab4:
 
             with coll0:
                 st.markdown("### red")
-                st.number_input("", key="srteam1", value=0)
-                st.number_input("", key="srteam2", value=0)
-                st.number_input("", key="srteam3", value=0)
+                st.number_input("r1", key="srteam1", value=0)
+                st.number_input("r2", key="srteam2", value=0)
+                st.number_input("r3", key="srteam3", value=0)
 
             with coll1:
                 st.markdown("### blue")
-                st.number_input("", key="sbteam1", value=0)
-                st.number_input("", key="sbteam2", value=0)
-                st.number_input("", key="sbteam3", value=0)
+                st.number_input("b1", key="sbteam1", value=0)
+                st.number_input("b2", key="sbteam2", value=0)
+                st.number_input("b3", key="sbteam3", value=0)
 
             submit = st.form_submit_button("STD Predict")
     with col1:
@@ -602,15 +596,15 @@ with tab5:
 
             with coll0:
                 st.markdown("### red")
-                st.number_input("", key="rteam1", value=0)
-                st.number_input("", key="rteam2", value=0)
-                st.number_input("", key="rteam3", value=0)
+                st.number_input("r1", key="rteam1", value=0)
+                st.number_input("r2", key="rteam2", value=0)
+                st.number_input("r3", key="rteam3", value=0)
 
             with coll1:
                 st.markdown("### blue")
-                st.number_input("", key="bteam1", value=0)
-                st.number_input("", key="bteam2", value=0)
-                st.number_input("", key="bteam3", value=0)
+                st.number_input("b1", key="bteam1", value=0)
+                st.number_input("b2", key="bteam2", value=0)
+                st.number_input("b3", key="bteam3", value=0)
 
             submit = st.form_submit_button("Predict")
     with col1:
