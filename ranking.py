@@ -3,21 +3,19 @@ import json
 
 def read_matches():
     try:
-        with open("jsons/rankings.json", "r") as r:
+        with open("rankings.json", "r") as r:
             data = json.load(r)
-        print(
-            f"Successfully read {len(data['rankings'])} rankings from jsons/matches.json"
-        )
+        print(f"Successfully read {len(data['rankings'])} rankings from matches.json")
         ranked = []
         for id, team in enumerate(data["rankings"], start=1):
             ranked.append(int(team["team_key"].replace("frc", "")))
 
         return ranked
     except FileNotFoundError:
-        print("Error: jsons/matches.json not found.")
+        print("Error: matches.json not found.")
         return None
     except json.JSONDecodeError:
-        print("Error: Failed to parse jsons/matches.json")
+        print("Error: Failed to parse matches.json")
         return None
 
 

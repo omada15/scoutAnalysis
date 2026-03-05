@@ -292,7 +292,7 @@ def teleopCalc(allTeams, autoWinner, defenseFactored=False):
 
 
 def main(redAlliance, blueAlliance):
-    with open("jsons/fetchedData.json", "r") as inFile:
+    with open("fetchedData.json", "r") as inFile:
         rawJsonString = inFile.read()
     jsonData = json.loads(rawJsonString)
 
@@ -338,7 +338,7 @@ def main(redAlliance, blueAlliance):
         },
     }
 
-    with open("jsons/teamPredictor.json", "w") as outFile:
+    with open("teamPredictor.json", "w") as outFile:
         json.dump(output, outFile, indent=4)
 
 

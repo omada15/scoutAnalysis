@@ -4,6 +4,7 @@ import traceback
 import sys
 import time
 
+
 def getValue(field):
     if isinstance(field, dict):
         if "integerValue" in field:
@@ -180,7 +181,7 @@ def fetch():
 
     if allData:
         cleanedData = cleanFirestoreData(allData)
-        outputFilename = "jsons/fetchedData.json"
+        outputFilename = "fetchedData.json"
         try:
             with open(outputFilename, "w") as outFile:
                 json.dump(cleanedData, outFile, indent=4)

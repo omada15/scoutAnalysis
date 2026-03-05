@@ -21,15 +21,17 @@ from stdTeamPredictor import predict as stdPred
 # ffetch()
 bFetch("matches")
 bFetch("rankings")
-with open("jsons/avgs.json", "w") as goy:
-    json.dump(processTeamAverages("jsons/fetchedData.json"), goy, indent=4)
+with open("avgs.json", "w") as goy:
+    json.dump(processTeamAverages("fetchedData.json"), goy, indent=4)
 convertAvgsToCsv()
 ranked = read_matches()
+
 
 def loadImageFromUrl(url):
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
     return img
+
 
 columnOrder = [
     "eventName",
@@ -114,13 +116,13 @@ def loadAndFlattenData(filePath):
 
 st.set_page_config(page_title="Raw Scouting Data", layout="wide")
 st.title("📊 Raw Scouting Data Viewer")
-dataPath = "jsons/fetchedData.json"
+dataPath = "fetchedData.json"
 allRows = loadAndFlattenData(dataPath)
 
 tab0, tab1, tab2, tab3, tab4, tab5 = st.tabs(
     ["individual", "data", "ranker", "matches", "STD predictor", "Game Predictor"]
 )
-df = pd.DataFrame(pd.read_csv("jsons/avgs.csv"))
+df = pd.DataFrame(pd.read_csv("avgs.csv"))
 
 extraDf = pd.DataFrame(pd.read_csv("mult.csv"))
 
@@ -153,11 +155,11 @@ criteriaMapping = {
 
 with tab0:
     try:
-        df = pd.read_csv("jsons/avgs.csv")
+        df = pd.read_csv("avgs.csv")
         df["teamNumber"] = df["teamNumber"].astype(str)
         teamList = sorted(df["teamNumber"].unique(), key=int)
     except FileNotFoundError:
-        st.error("File 'jsons/avgs.csv' not found. Please check the file path.")
+        st.error("File 'avgs.csv' not found. Please check the file path.")
 
     st.header("Match Selection")
     redSel = st.multiselect("Red Alliance", teamList, max_selections=3)
@@ -197,7 +199,7 @@ with tab1:
 
         df = df[finalColumns]
 
-        with open("jsons/fetchedData.json", "r") as goy:
+        with open("fetchedData.json", "r") as goy:
             teamsList = [str(t) for t in json.load(goy).get("team", [])]
 
         st.sidebar.header("Filters")
@@ -258,10 +260,10 @@ with tab1:
             },
         )
     else:
-        st.warning("No data to display. Please ensure jsons/fetchedData.json exists.")
+        st.warning("No data to display. Please ensure fetchedData.json exists.")
 
 with tab2:
-    df = pd.read_csv("jsons/avgs.csv")
+    df = pd.read_csv("avgs.csv")
     c1, c2, c3, c4, c5, c6, c7, c8 = st.columns(8)
 
     if "Pickability" in df.columns:
@@ -393,15 +395,15 @@ with tab3:
     def mainSchedule():
         st.title("Match Schedule & Scout Verification")
         try:
-            with open("jsons/matches.json", "r") as f:
+            with open("matches.json", "r") as f:
                 matchList = json.load(f)
             matchList.sort(key=lambda x: x.get("match_number", 0))
         except (FileNotFoundError, json.JSONDecodeError):
-            st.error("Error: Could not load jsons/matches.json.")
+            st.error("Error: Could not load matches.json.")
             return
 
         try:
-            with open("jsons/fetchedData.json", "r") as f:
+            with open("fetchedData.json", "r") as f:
                 scoutingData = json.load(f).get("root", {})
         except (FileNotFoundError, json.JSONDecodeError):
             scoutingData = {}
@@ -517,7 +519,7 @@ with tab4:
             ],
         )
         time.sleep(1)
-        with open("jsons/stdTeamPredictor.json", "r") as goy:
+        with open("stdTeamPredictor.json", "r") as goy:
             stds = json.load(goy)
         st.markdown(f"## Standard Deviation Predictor")
         st.markdown(f"### {stds.get('output_cell', '')}")
@@ -562,7 +564,7 @@ with tab5:
                     ],
                 )
                 time.sleep(3)
-                with open("jsons/teamPredictor.json", "r") as goy:
+                with open("teamPredictor.json", "r") as goy:
                     preds = json.load(goy)
 
                 reds = preds.get("Red_Alliance", {})
