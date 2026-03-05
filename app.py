@@ -18,7 +18,7 @@ from stdTeamPredictor import predict as stdPred
 # pip install streamlit pandas st_image_button requests
 # with python 3.13
 
-# ffetch()
+ffetch()
 bFetch("matches")
 bFetch("rankings")
 with open("avgs.json", "w") as goy:
