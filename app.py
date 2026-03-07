@@ -216,7 +216,7 @@ with tab1:
                 "Filter by Team",
                 options=allTeams,
                 key="teamSelector",
-                default=st.session_state.selectedTeams,
+                #default=st.session_state.selectedTeams,
             )
 
             df = df[df["teamNumber"].astype(str).isin(selectedTeams)]
@@ -384,6 +384,7 @@ with tab3:
         ["R Mukherjee", "Prausa", "Khan", "Delport", "A Vargas", "Caulfield"],
         ["Dong", "McGrath", "Matos", "Rahban", "Chang", "Morgan"],
         ["Jennings", "Conway", "Senchukov", "Dong", "Matos", "Ding"],
+        #["Yury", "json", "Tuthill", ]
     ]
     matchOrder = list(range(len(teamsGroup)))
 
@@ -450,7 +451,6 @@ with tab3:
                 continue
 
             allianceColors = ["#8B0000"] * 3 + ["#00008B"] * 3
-            print(matchOrder)
             assignedScouters = teamsGroup[matchOrder[idx % len(matchOrder)]]
             
             checkLabels, checkColors = [], []

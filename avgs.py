@@ -53,6 +53,7 @@ def processTeamAverages(filePath, teams=None):
     }
 
     for team in teamList:
+        print(team)
         teamMatches = rootData.get(str(team), {})
         matchCount = len(teamMatches)
 
