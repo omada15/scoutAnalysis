@@ -9,12 +9,10 @@ headers = {"X-TBA-Auth-Key": apiKey}
 
 def fetch(method):
     url = f"https://www.thebluealliance.com/api/v3/event/{event}/{method}"
-    print(f"Fetching: {url}")
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
         data = response.json()
-        print(data)
         print(f"Successfully fetched {len(data)} matches!")
         with open(f"{method}.json", "w") as w:
             json.dump(data, w, indent=4)
