@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import time
+import time as t
 import json
 from PIL import Image
 from io import BytesIO
@@ -402,30 +402,6 @@ with tab3:
         5,
         6,
         7,
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
     ]
 
     def getStackedCell(items, colors=None):
@@ -467,7 +443,7 @@ with tab3:
             ) == "qm":
                 continue
 
-            time = match.get("actual_time", 0)
+            time = match.get("actual_time", None)
 
             matchNum = match.get("match_number", idx + 1)
             matchStr = str(matchNum)
@@ -491,12 +467,14 @@ with tab3:
                 continue
 
             allianceColors = ["#8B0000"] * 3 + ["#00008B"] * 3
+            print(matchOrder)
             assignedScouters = teamsGroup[matchOrder[idx % len(matchOrder)]]
-
+            
             checkLabels, checkColors = [], []
             for i in range(6):
                 teamNum = displayTeams[i]
                 assignedName = assignedScouters[i]
+                
                 actualScouterName = (
                     scoutingData.get(teamNum, {}).get(matchStr, {}).get("name", "")
                 )
@@ -514,8 +492,11 @@ with tab3:
             r1, r2, r3, r4 = st.columns([1, 2, 2, 2])
 
             with r1:
-                if time < 1773067227:  # time
-                    st.markdown("MATCH OVER")
+                if time != None:  # time
+                    if (time < t.time()):
+                        st.markdown("MATCH OVER")
+                    else:
+                        st.markdown("MATCH PENDING")
                 else:
                     st.markdown("MATCH PENDING")
                 st.markdown(f"### {compLevel} {matchNum}")
@@ -570,7 +551,7 @@ with tab4:
                 st.session_state.get("sbTeam3"),
             ],
         )
-        time.sleep(1)
+        t.sleep(1)
         with open("stdTeamPredictor.json", "r") as goy:
             stds = json.load(goy)
         st.markdown(f"## Standard Deviation Predictor")
