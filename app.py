@@ -385,24 +385,7 @@ with tab3:
         ["Dong", "McGrath", "Matos", "Rahban", "Chang", "Morgan"],
         ["Jennings", "Conway", "Senchukov", "Dong", "Matos", "Ding"],
     ]
-    matchOrder = [
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-    ]
+    matchOrder = list(range(len(teamsGroup)))
 
     def getStackedCell(items, colors=None):
         htmlString = '<div style="display: flex; flex-direction: column; height: 100%; width: 100%; border: 1px solid #ccc; border-radius: 4px; overflow: hidden;">'
