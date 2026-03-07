@@ -2,7 +2,7 @@ import requests
 import json
 
 apiKey = "CVI6FjGLtHQbCUwrb7GYAUGGWkKV7w115MdXgjnQzNSijNGV3IDkgOuRxogOVLuy"
-event = "2026week0"
+event = "2026mabil"
 method = "matches"  # matches rankings
 headers = {"X-TBA-Auth-Key": apiKey}
 
@@ -14,6 +14,7 @@ def fetch(method):
 
     if response.status_code == 200:
         data = response.json()
+        print(data)
         print(f"Successfully fetched {len(data)} matches!")
         with open(f"{method}.json", "w") as w:
             json.dump(data, w, indent=4)
