@@ -380,10 +380,10 @@ with tab3:
         ["Jennings", "Senchukov", "Dillion", "Nicol", "Biamonte", "Hefferon"],
         ["Ding", "Agrawal", "Amsterdam", "Lenarz", "Browne", "Sauer"],
         ["Kruger", "Sardinha", "Ismoedi", "Gairola", "Precourt", "Losito"],
-        ["Ding", "Miller", "Bradley", "Ahn", "Wickramaarachchi", "Hedge"],
+        ["Meng", "Miller", "Bradley", "Ahn", "Wickramaarachchi", "Hedge"],
         ["R Mukherjee", "Prausa", "Khan", "Delport", "A Vargas", "Caulfield"],
         ["Dong", "McGrath", "Matos", "Rahban", "Chang", "Morgan"],
-        ["Jennings", "Conway", "Senchukov", "Dong", "Matos", "Ding"],
+        ["Jennings", "Conway", "Meng", "Dong", "Matos", "Ding"],
         #["Yury", "json", "Tuthill", ]
     ]
     matchOrder = list(range(len(teamsGroup)))
