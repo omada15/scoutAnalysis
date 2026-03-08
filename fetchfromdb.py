@@ -64,12 +64,12 @@ def fetchDataByTeamNum(teamNum, allData=None):
                 return allData
             else:
                 print(f"No matches found for team {teamNum}")
-                return allData
+                return None
         else:
             print(
                 f"Error {response.status_code} fetching team {teamNum}: {response.text}"
             )
-            return allData
+            return allData,
 
     except Exception as e:
         print(f"Error fetching team {teamNum}: {e}")
@@ -168,20 +168,25 @@ def cleanFirestoreData(data):
     return data
 
 
-def fetch():
+def fetch(method):
     teamNumsRaw = fetchAllDataRecursive("/datas")
     teamNumsRaw = teamNumsRaw.get("/datas/data", {})
-    teamNumsField = teamNumsRaw.get("team", [])
-    teamList = getValue(teamNumsField)
+    if (method == "matches"):
+        outputFilename = "fetchedData.json"
+        teamNumsField = teamNumsRaw.get("team", [])
+        teamList = getValue(teamNumsField)
 
-    allData = {"team": teamList, "root": {}}
+        allData = {"team": teamList, "root": {}}
 
-    for teamNum in teamList:
-        fetchDataByTeamNum(teamNum, allData)
+        for teamNum in teamList:
+            fetchDataByTeamNum(teamNum, allData)
+
+    elif (method == "pit"):
+        outputFilename = "pit.json"
+        allData = cleanFirestoreData(fetchAllDataRecursive("/pitScouting"))
 
     if allData:
         cleanedData = cleanFirestoreData(allData)
-        outputFilename = "fetchedData.json"
         try:
             with open(outputFilename, "w") as outFile:
                 json.dump(cleanedData, outFile, indent=4)
@@ -192,5 +197,5 @@ def fetch():
 
 if __name__ == "__main__":
     start = time.time()
-    fetch()
+    fetch("pit")
     print(f"Fetch completed in {time.time() - start:.2f} seconds.")

@@ -17,8 +17,12 @@ from stdTeamPredictor import predict as stdPred
 # required pip installs:
 # pip install streamlit pandas st_image_button requests
 # with python 3.13
+start = t.time()
+fetch = False
+if (fetch):
+    ffetch("matches")
+    ffetch("pit")
 
-# ffetch()
 bFetch("matches")
 bFetch("rankings")
 with open("avgs.json", "w") as goy:
@@ -382,7 +386,7 @@ with tab3:
         ["Kruger", "Sardinha", "Ismoedi", "Gairola", "Precourt", "Losito"],
         ["Meng", "Miller", "Bradley", "Ahn", "Wickramaarachchi", "Hedge"],
         ["R Mukherjee", "Prausa", "Khan", "Delport", "A Vargas", "Caulfield"],
-        ["Dong", "McGrath", "Matos", "Rahban", "Chang", "Morgan"],
+        ["Dong", "McGrath", "Matos", "Rahban", "Chang", "Dong"],
         ["Jennings", "Conway", "Meng", "Dong", "Matos", "Ding"],
         #["Yury", "json", "Tuthill", ]
     ]
@@ -609,3 +613,5 @@ with tab5:
         st.markdown(f"Likely: {bAvg}")
         st.markdown(f"Max: {bMax}")
         st.markdown(f"Win chance: {bWin}")
+
+print(f"final runtime: {round(t.time()-start, 2)}")
