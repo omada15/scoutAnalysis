@@ -123,8 +123,8 @@ st.title("📊 Raw Scouting Data Viewer")
 dataPath = "fetchedData.json"
 allRows = loadAndFlattenData(dataPath)
 
-tab0, tab1, tab2, tab3, tab4, tab5 = st.tabs(
-    ["individual", "data", "ranker", "matches", "STD predictor", "Game Predictor"]
+tab0, tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
+    ["individual", "data", "ranker", "matches", "STD predictor", "Game Predictor",  "Pit Scouting"]
 )
 df = pd.DataFrame(pd.read_csv("avgs.csv"))
 
@@ -617,3 +617,9 @@ with tab5:
         st.markdown(f"Win chance: {bWin}")
 
 print(f"final runtime: {round(t.time()-start, 2)}")
+with tab6:
+    pit_Scouting_Df = pd.read_json("pit.json")
+
+    pit_Scouting_Df = pd.DataFrame(pit_Scouting_Df)
+    pit_Scouting_Df.columns = pit_Scouting_Df.columns.str.replace("/pitScouting/", "", regex= True)
+    st.dataframe(pit_Scouting_Df)
