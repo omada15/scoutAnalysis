@@ -386,7 +386,7 @@ with tab3:
         ["Kruger", "Sardinha", "Ismoedi", "Gairola", "Precourt", "Losito"],
         ["Meng", "Miller", "Bradley", "Ahn", "Wickramaarachchi", "Hedge"],
         ["R Mukherjee", "Prausa", "Khan", "Delport", "A Vargas", "Caulfield"],
-        ["Dong", "McGrath", "Matos", "Rahban", "Chang", "Dong"],
+        ["Dong", "McGrath", "Matos", "Rahban", "Chang", "Ahn"],
         ["Jennings", "Conway", "Meng", "Dong", "Matos", "Ding"],
         #["Yury", "json", "Tuthill", ]
     ]
