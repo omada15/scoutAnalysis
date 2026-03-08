@@ -18,7 +18,7 @@ from stdTeamPredictor import predict as stdPred
 # pip install streamlit pandas st_image_button requests
 # with python 3.13
 
-# ffetch()
+ffetch()
 bFetch("matches")
 bFetch("rankings")
 with open("avgs.json", "w") as goy:
@@ -216,7 +216,7 @@ with tab1:
                 "Filter by Team",
                 options=allTeams,
                 key="teamSelector",
-                #default=st.session_state.selectedTeams,
+                default=st.session_state.selectedTeams,
             )
 
             df = df[df["teamNumber"].astype(str).isin(selectedTeams)]
@@ -372,13 +372,13 @@ with tab2:
         ),
         hide_index=True,
         disabled=True,
-        key="performanceEditor",
+        key="chud",
     )
 
 with tab3:
     teamsGroup = [
         ["Jennings", "Senchukov", "Dillion", "Nicol", "Biamonte", "Hefferon"],
-        ["Barcomb", "Agrawal", "Amsterdam", "Lenarz", "Browne", "Sauer"],
+        ["Ding", "Agrawal", "Amsterdam", "Lenarz", "Browne", "Sauer"],
         ["Kruger", "Sardinha", "Ismoedi", "Gairola", "Precourt", "Losito"],
         ["Ding", "Miller", "Bradley", "Ahn", "Wickramaarachchi", "Hedge"],
         ["R Mukherjee", "Prausa", "Khan", "Delport", "A Vargas", "Caulfield"],
