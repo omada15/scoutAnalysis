@@ -579,7 +579,7 @@ with tab5:
                         st.session_state.get("bTeam3"),
                     ],
                 )
-                time.sleep(3)
+                t.sleep(3)
                 with open("teamPredictor.json", "r") as goy:
                     preds = json.load(goy)
 
