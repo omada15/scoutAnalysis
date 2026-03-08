@@ -390,6 +390,7 @@ with tab3:
         ["Jennings", "Conway", "Meng", "Dong", "Matos", "Ding"],
         #["Yury", "json", "Tuthill", ]
     ]
+
     matchOrder = list(range(len(teamsGroup)))
 
     def getStackedCell(items, colors=None):
@@ -425,6 +426,7 @@ with tab3:
         h4.write("**Scout Check (Status)**")
         st.divider()
 
+
         for idx, match in enumerate(matchList):
             if (not isinstance(match, dict)) or not match.get(
                 "comp_level", "qm"
@@ -456,12 +458,12 @@ with tab3:
 
             allianceColors = ["#8B0000"] * 3 + ["#00008B"] * 3
             assignedScouters = teamsGroup[matchOrder[idx % len(matchOrder)]]
-            
+
             checkLabels, checkColors = [], []
             for i in range(6):
                 teamNum = displayTeams[i]
                 assignedName = assignedScouters[i]
-                
+
                 actualScouterName = (
                     scoutingData.get(teamNum, {}).get(matchStr, {}).get("name", "")
                 )

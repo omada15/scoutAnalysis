@@ -23,7 +23,6 @@ def convertAvgsToCsv(json_file="avgs.json", csv_file="avgs.csv"):
             writer.writerows(rows)
 
         print(f"Successfully converted {json_file} to {csv_file}")
-        print(f"Headers: {', '.join(headers)}")
         print(f"Rows written: {num_rows}")
     except FileNotFoundError:
         print(f"Error: {json_file} not found")
@@ -32,4 +31,4 @@ def convertAvgsToCsv(json_file="avgs.json", csv_file="avgs.csv"):
 
 
 if __name__ == "__main__":
-    convert_avgs_to_csv()
+    convertAvgsToCsv()
