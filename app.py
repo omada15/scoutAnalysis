@@ -449,14 +449,14 @@ with tab3:
                 st.markdown("TEAM")
 
 
-                for i in range(6):
+                for i in [3, 4, 5, 0, 1, 2]:
                     selectedTeam = allTeams[i]
                     scouter = scoutingData.get(selectedTeam, {}).get(str(match+1), {}).get("name", "")
                     if i<3:
-                        allianceColor ="🟥"
+                        allianceColor = "🟥"
                     else:
                         allianceColor = "🟦"
-                    st.write(f"{allianceColor} {selectedTeam} — {"🟩"+scouter if scouter != "" else "🟥" +teamsGroup[matchOrder[match % len(matchOrder)]][i]}")
+                    st.write(f"{allianceColor} {selectedTeam} — {"✅ "+scouter if scouter != "" else "❌" +teamsGroup[matchOrder[match % len(matchOrder)]][i]}")
 
 
     mainSchedule()
