@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import time as t
 import json
-from PIL import Image
-from io import BytesIO
 import requests
 from ranking import read_matches
 from bluealliance import fetch as bFetch
@@ -402,109 +400,76 @@ with tab3:
         htmlString += "</div>"
         return htmlString
 
-    def mainSchedule():
-        st.title("Match Schedule & Scout Verification")
-        try:
-            with open("matches.json", "r") as f:
-                matchList = json.load(f)
-            matchList.sort(key=lambda x: x.get("match_number", 0))
-        except (FileNotFoundError, json.JSONDecodeError):
-            st.error("Error: Could not load matches.json.")
-            return
-
-        try:
-            with open("fetchedData.json", "r") as f:
-                scoutingData = json.load(f).get("root", {})
-        except (FileNotFoundError, json.JSONDecodeError):
-            scoutingData = {}
-
-        st.divider()
-        h1, h2, h3, h4 = st.columns([1, 2, 2, 2])
-        h1.write("**Match / Score**")
-        h2.write("**Teams (Red/Blue)**")
-        h3.write("**Assigned Scouters**")
-        h4.write("**Scout Check (Status)**")
-        st.divider()
+def mainSchedule():
 
 
-        for idx, match in enumerate(matchList):
-            if (not isinstance(match, dict)) or not match.get(
-                "comp_level", "qm"
-            ) == "qm":
-                continue
 
-            time = match.get("actual_time", None)
+    st.title("Matches")
+    try:
+        with open("matches.json", "r") as f:
+            matchList = json.load(f)
+        matchList.sort(key=lambda x: x.get("match_number", 0))
+    except (FileNotFoundError, json.JSONDecodeError):
+        st.error("Error: Could not load matches.json.")
+        return
 
-            matchNum = match.get("match_number", idx + 1)
-            matchStr = str(matchNum)
-            compLevel = match.get("comp_level", "qm").upper()
-            alliances = match.get("alliances", {})
+    try:
+        with open("fetchedData.json", "r") as f:
+            scoutingData = json.load(f).get("root", {})
+    except (FileNotFoundError, json.JSONDecodeError):
+        scoutingData = {}
 
-            redScore = alliances.get("red", {}).get("score", 0)
-            blueScore = alliances.get("blue", {}).get("score", 0)
+    for match, matches in enumerate(matchList):
 
-            redKeys = [
-                t.replace("frc", "")
-                for t in alliances.get("red", {}).get("team_keys", [])
-            ]
-            blueKeys = [
-                t.replace("frc", "")
-                for t in alliances.get("blue", {}).get("team_keys", [])
-            ]
-            displayTeams = redKeys + blueKeys
+        matchNum = str(matches.get("match_number", match+1))
+        compLevel = matches.get("comp_level", "qm").upper()
+        alliances = matches.get("alliances", {})
 
-            if len(displayTeams) < 6:
-                continue
+        redScore = alliances.get("red", {}).get("score", 0)
+        blueScore = alliances.get("blue", {}).get("score", 0)
 
-            allianceColors = ["#8B0000"] * 3 + ["#00008B"] * 3
-            assignedScouters = teamsGroup[matchOrder[idx % len(matchOrder)]]
+        redKeys = [
+            team.replace("frc", "")
+            for team in alliances.get("red", {}).get("team_keys", [])
+        ]
+        blueKeys = [
+            team.replace("frc", "")
+            for team in alliances.get("blue", {}).get("team_keys", [])
+        ]
 
-            checkLabels, checkColors = [], []
+        allTeams = redKeys+blueKeys
+
+
+
+
+#put emojis cuz im not dealing with chud html
+        with st.container(border= True):
+            st.markdown(f"Match : {matchNum} 🟥{redScore } 🟦 {blueScore}")
+
+            h1, h2, h3 = st.columns([1, 2, 2])
+            h1.markdown("Alliance")
+            h2.markdown("Team")
+            h3.markdown("Scouter")
+
             for i in range(6):
-                teamNum = displayTeams[i]
-                assignedName = assignedScouters[i]
-
-                actualScouterName = (
-                    scoutingData.get(teamNum, {}).get(matchStr, {}).get("name", "")
-                )
-
-                if actualScouterName.lower() == assignedName.lower():
-                    checkLabels.append(f"Verified: {actualScouterName}")
-                    checkColors.append("#00ff1e")
-                elif actualScouterName != "":
-                    checkLabels.append(f"Scouter: {actualScouterName}")
-                    checkColors.append("#636300")
+                selectedTeam = allTeams[i]
+                scouter = scoutingData.get(selectedTeam, {}).get(str(matchNum), {}).get("name", "")
+                if i<3:
+                    allianceColor ="🟥"
                 else:
-                    checkLabels.append(f"Missing: {assignedName}")
-                    checkColors.append("#8B0000")
-
-            r1, r2, r3, r4 = st.columns([1, 2, 2, 2])
-
-            with r1:
-                if time != None:  # time
-                    if (time < t.time()):
-                        st.markdown("MATCH OVER")
-                    else:
-                        st.markdown("MATCH PENDING")
+                    allianceColor = "🟦"
+                col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
+                col1.write(allianceColor)
+                col2.write(selectedTeam)
+                if scouter.lower() !="":
+                    col4.write(f"🟩{scouter}")
                 else:
-                    st.markdown("MATCH PENDING")
-                st.markdown(f"### {compLevel} {matchNum}")
-                st.markdown(f"**Red: {redScore}**")
-                st.markdown(f"**Blue: {blueScore}**")
-            with r2:
-                st.markdown(
-                    getStackedCell(displayTeams, allianceColors), unsafe_allow_html=True
-                )
-            with r3:
-                st.markdown(getStackedCell(assignedScouters), unsafe_allow_html=True)
-            with r4:
-                st.markdown(
-                    getStackedCell(checkLabels, checkColors), unsafe_allow_html=True
-                )
-            st.divider()
+                    col4.write(f"🟥 {teamsGroup[matchOrder[match % len(matchOrder)]][i]}")
+          
 
-    mainSchedule()
 
+
+mainSchedule()
 with tab4:
     colA, colB, colC = st.columns(3)
     with colA:
