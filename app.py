@@ -443,7 +443,10 @@ with tab3:
 
     #put emojis cuz im not dealing with chud html
             with st.container(border= True):
-                st.markdown(f"Match : {match+1} 🟥{redScore } 🟦 {blueScore}")
+                col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
+
+                st.write(f"Match : {match+1} 🟥{redScore } 🟦 {blueScore}")
+                st.write("TEAM")
 
 
                 for i in range(6):
@@ -453,7 +456,6 @@ with tab3:
                         allianceColor ="🟥"
                     else:
                         allianceColor = "🟦"
-                    col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
                     st.write(f"{allianceColor} {selectedTeam} — {"🟩"+scouter if scouter != "" else "🟥" +teamsGroup[matchOrder[match % len(matchOrder)]][i]}")
 
 
