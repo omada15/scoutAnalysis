@@ -445,8 +445,8 @@ with tab3:
             with st.container(border= True):
                 col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
 
-                st.write(f"Match : {match+1} 🟥{redScore } 🟦 {blueScore}")
-                st.write("TEAM")
+                st.markdown(f"Match : {match+1} 🟥{redScore } 🟦 {blueScore}")
+                st.markdown("TEAM")
 
 
                 for i in range(6):
