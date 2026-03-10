@@ -457,7 +457,7 @@ def mainSchedule():
                 st.write(f"{allianceColor} {selectedTeam} — {"🟩"+scouter if scouter != "" else "🟥" +teamsGroup[matchOrder[match % len(matchOrder)]][i]}")
 
 
-mainSchedule()
+    mainSchedule()
 with tab4:
     colA, colB, colC = st.columns(3)
     with colA:
