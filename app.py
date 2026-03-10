@@ -390,7 +390,7 @@ with tab3:
     ]
 
     matchOrder = list(range(len(teamsGroup)))
-
+#keeping this just incase sam needs it
     def getStackedCell(items, colors=None):
         htmlString = '<div style="display: flex; flex-direction: column; height: 100%; width: 100%; border: 1px solid #ccc; border-radius: 4px; overflow: hidden;">'
         for i, item in enumerate(items):
@@ -421,7 +421,6 @@ def mainSchedule():
 
     for match, matches in enumerate(matchList):
 
-        matchNum = str(matches.get("match_number", match+1))
         compLevel = matches.get("comp_level", "qm").upper()
         alliances = matches.get("alliances", {})
 
@@ -444,12 +443,12 @@ def mainSchedule():
 
 #put emojis cuz im not dealing with chud html
         with st.container(border= True):
-            st.markdown(f"Match : {matchNum} 🟥{redScore } 🟦 {blueScore}")
+            st.markdown(f"Match : {match+1} 🟥{redScore } 🟦 {blueScore}")
 
 
             for i in range(6):
                 selectedTeam = allTeams[i]
-                scouter = scoutingData.get(selectedTeam, {}).get(str(matchNum), {}).get("name", "")
+                scouter = scoutingData.get(selectedTeam, {}).get(str(match+1), {}).get("name", "")
                 if i<3:
                     allianceColor ="🟥"
                 else:
