@@ -446,10 +446,6 @@ def mainSchedule():
         with st.container(border= True):
             st.markdown(f"Match : {matchNum} 🟥{redScore } 🟦 {blueScore}")
 
-            h1, h2, h3 = st.columns([1, 2, 2])
-            h1.markdown("Alliance")
-            h2.markdown("Team")
-            h3.markdown("Scouter")
 
             for i in range(6):
                 selectedTeam = allTeams[i]
@@ -459,14 +455,7 @@ def mainSchedule():
                 else:
                     allianceColor = "🟦"
                 col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
-                col1.write(allianceColor)
-                col2.write(selectedTeam)
-                if scouter.lower() !="":
-                    col4.write(f"🟩{scouter}")
-                else:
-                    col4.write(f"🟥 {teamsGroup[matchOrder[match % len(matchOrder)]][i]}")
-          
-
+                st.write(f"{allianceColor} {selectedTeam} — {"🟩"+scouter if scouter != "" else "🟥" +teamsGroup[matchOrder[match % len(matchOrder)]][i]}")
 
 
 mainSchedule()
