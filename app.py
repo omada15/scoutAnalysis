@@ -400,61 +400,61 @@ with tab3:
         htmlString += "</div>"
         return htmlString
 
-def mainSchedule():
+    def mainSchedule():
 
 
 
-    st.title("Matches")
-    try:
-        with open("matches.json", "r") as f:
-            matchList = json.load(f)
-        matchList.sort(key=lambda x: x.get("match_number", 0))
-    except (FileNotFoundError, json.JSONDecodeError):
-        st.error("Error: Could not load matches.json.")
-        return
+        st.title("Matches")
+        try:
+            with open("matches.json", "r") as f:
+                matchList = json.load(f)
+            matchList.sort(key=lambda x: x.get("match_number", 0))
+        except (FileNotFoundError, json.JSONDecodeError):
+            st.error("Error: Could not load matches.json.")
+            return
 
-    try:
-        with open("fetchedData.json", "r") as f:
-            scoutingData = json.load(f).get("root", {})
-    except (FileNotFoundError, json.JSONDecodeError):
-        scoutingData = {}
+        try:
+            with open("fetchedData.json", "r") as f:
+                scoutingData = json.load(f).get("root", {})
+        except (FileNotFoundError, json.JSONDecodeError):
+            scoutingData = {}
 
-    for match, matches in enumerate(matchList):
+        for match, matches in enumerate(matchList):
 
-        compLevel = matches.get("comp_level", "qm").upper()
-        alliances = matches.get("alliances", {})
+            compLevel = matches.get("comp_level", "qm").upper()
+            alliances = matches.get("alliances", {})
 
-        redScore = alliances.get("red", {}).get("score", 0)
-        blueScore = alliances.get("blue", {}).get("score", 0)
+            redScore = alliances.get("red", {}).get("score", 0)
+            blueScore = alliances.get("blue", {}).get("score", 0)
 
-        redKeys = [
-            team.replace("frc", "")
-            for team in alliances.get("red", {}).get("team_keys", [])
-        ]
-        blueKeys = [
-            team.replace("frc", "")
-            for team in alliances.get("blue", {}).get("team_keys", [])
-        ]
+            redKeys = [
+                team.replace("frc", "")
+                for team in alliances.get("red", {}).get("team_keys", [])
+            ]
+            blueKeys = [
+                team.replace("frc", "")
+                for team in alliances.get("blue", {}).get("team_keys", [])
+            ]
 
-        allTeams = redKeys+blueKeys
-
-
+            allTeams = redKeys+blueKeys
 
 
-#put emojis cuz im not dealing with chud html
-        with st.container(border= True):
-            st.markdown(f"Match : {match+1} 🟥{redScore } 🟦 {blueScore}")
 
 
-            for i in range(6):
-                selectedTeam = allTeams[i]
-                scouter = scoutingData.get(selectedTeam, {}).get(str(match+1), {}).get("name", "")
-                if i<3:
-                    allianceColor ="🟥"
-                else:
-                    allianceColor = "🟦"
-                col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
-                st.write(f"{allianceColor} {selectedTeam} — {"🟩"+scouter if scouter != "" else "🟥" +teamsGroup[matchOrder[match % len(matchOrder)]][i]}")
+    #put emojis cuz im not dealing with chud html
+            with st.container(border= True):
+                st.markdown(f"Match : {match+1} 🟥{redScore } 🟦 {blueScore}")
+
+
+                for i in range(6):
+                    selectedTeam = allTeams[i]
+                    scouter = scoutingData.get(selectedTeam, {}).get(str(match+1), {}).get("name", "")
+                    if i<3:
+                        allianceColor ="🟥"
+                    else:
+                        allianceColor = "🟦"
+                    col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
+                    st.write(f"{allianceColor} {selectedTeam} — {"🟩"+scouter if scouter != "" else "🟥" +teamsGroup[matchOrder[match % len(matchOrder)]][i]}")
 
 
     mainSchedule()
