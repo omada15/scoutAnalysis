@@ -443,7 +443,7 @@ with tab3:
         # 3: Cannot contain C or D
         [
             "Matthew McGrath",
-            ":rainbow[Sam Meng]",
+            "Sam Meng",
             "Daniel Senchukov",
             "William Ding",
             ":yellow[Estiaan Kruger]",
@@ -474,7 +474,7 @@ with tab3:
             "Evan Prausa",
             "Jason Zhang",
             "William Ding",
-            ":rainbow[Sam Meng]",
+            "Sam Meng",
         ],
     ]
 
