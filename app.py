@@ -463,6 +463,7 @@ with tab3:
             "Aidan Ahn",
             "Wesley Barcomb",
             "Zoe Conway",
+            "Daniel Senchukov",
         ],
         # 6: Cannot contain A or B
         [
