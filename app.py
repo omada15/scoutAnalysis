@@ -22,8 +22,8 @@ if fetch:
     ffetch("matches")
     ffetch("pit")
 
-# bFetch("matches")
-# bFetch("rankings")
+bFetch("matches")
+bFetch("rankings")
 with open("avgs.json", "w") as goy:
     json.dump(processTeamAverages("fetchedData.json"), goy, indent=4)
 convertAvgsToCsv()
