@@ -6,7 +6,7 @@ event = "2026rikin"
 method = "matches"  # matches rankings
 headers = {"X-TBA-Auth-Key": apiKey}
 
-
+#
 def fetch(method):
     url = f"https://www.thebluealliance.com/api/v3/event/{event}/{method}"
     response = requests.get(url, headers=headers)

@@ -573,7 +573,13 @@ with tab3:
             continue
 
         estTime = matches.get("predicted_time", 0)
-        estTime = time.strftime("%H:%M:%S", time.localtime(estTime))
+        estOffset = -5 * 3600
+
+        estEpoch = estTime + estOffset
+
+        estStruct = time.gmtime(estEpoch)
+
+        formattedTime = time.strftime('%H:%M', estStruct)
         actualTime = matches.get("actual_time", None)
 
         compLevel = matches.get("comp_level", "qm").upper()
