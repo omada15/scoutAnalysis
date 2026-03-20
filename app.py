@@ -30,10 +30,10 @@ convertAvgsToCsv()
 ranked = read_matches()
 
 
-"""def loadImageFromUrl(url):
+def loadImageFromUrl(url):
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
-    return img"""
+    return img
 
 
 columnOrder = [
@@ -444,7 +444,7 @@ with tab3:
             "Sam Meng",
             "Daniel Senchukov",
             "William Ding",
-            "Johannes Kruger",
+            ":yellow[Estiaan Kruger]",
             "Ryan Hefferon",
         ],
         # 4: Cannot contain D
