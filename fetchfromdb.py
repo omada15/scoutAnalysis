@@ -171,10 +171,13 @@ def cleanFirestoreData(data):
 def fetch(method):
     teamNumsRaw = fetchAllDataRecursive("/datas")
     teamNumsRaw = teamNumsRaw.get("/datas/data", {})
+
     if (method == "matches"):
         outputFilename = "fetchedData.json"
         teamNumsField = teamNumsRaw.get("team", [])
         teamList = getValue(teamNumsField)
+        teamList = [int(num) for num in teamList]
+        print(teamList)
 
         allData = {"team": teamList, "root": {}}
 

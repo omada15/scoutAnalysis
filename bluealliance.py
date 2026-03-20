@@ -2,7 +2,7 @@ import requests
 import json
 
 apiKey = "CVI6FjGLtHQbCUwrb7GYAUGGWkKV7w115MdXgjnQzNSijNGV3IDkgOuRxogOVLuy"
-event = "2026mabil"
+event = "2026rikin"
 method = "matches"  # matches rankings
 headers = {"X-TBA-Auth-Key": apiKey}
 
