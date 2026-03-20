@@ -579,7 +579,7 @@ with tab3:
 
         estStruct = time.gmtime(estEpoch)
 
-        formattedTime = time.strftime('%H:%M', estStruct)
+        estTime = time.strftime('%H:%M', estStruct)
         actualTime = matches.get("actual_time", None)
 
         compLevel = matches.get("comp_level", "qm").upper()
