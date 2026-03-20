@@ -407,7 +407,7 @@ with tab3:
         ],  # 2
         ["McGrath", "sam meng", "Senchukov", "Ding", "Kruger", "Ryan Hefferon"],  # 3
         ["Sauer", "Maxwell Miller", "Ismoedi", "Chang", "Daniel Sardinha", "KH"],  # 4
-        ["Khan", "Senuth W", "Aidan", "Ding", "Barcomb", "Conway"],  # 5
+        ["Khan", "Senut W", "Aidan", "Ding", "Barcomb", "Conway"],  # 5
         ["Delport", "Rahban", "Prausa", "Jason Zhang", "sam meng", "Ding"],  # 6
     ]
     teamsGroup = [
@@ -573,7 +573,7 @@ with tab3:
             continue
 
         estTime = matches.get("predicted_time", 0)
-        estOffset = -5 * 3600
+        estOffset = -4 * 3600
 
         estEpoch = estTime + estOffset
 
