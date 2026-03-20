@@ -444,7 +444,7 @@ with tab3:
             "Sam Meng",
             "Daniel Senchukov",
             "William Ding",
-            "Johannes Kruger",
+            ":yellow[Estiaan Kruger]",
             "Ryan Hefferon",
         ],
         # 4: Cannot contain D
