@@ -472,7 +472,8 @@ with tab3:
             "Tiana Delport",
             "Alex Rahban",
             "Evan Prausa",
-            "Jason Zhang",
+            '<span style="color:rgb(33,207,219)">Jason Zhang</span>'
+,
             "William Ding",
             "Sam Meng",
         ],
