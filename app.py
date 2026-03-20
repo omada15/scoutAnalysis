@@ -17,7 +17,7 @@ from stdTeamPredictor import predict as stdPred
 # pip install streamlit pandas st_image_button requests
 # with python 3.13
 start = t.time()
-fetch = True
+fetch = False
 if fetch:
     ffetch("matches")
     ffetch("pit")
