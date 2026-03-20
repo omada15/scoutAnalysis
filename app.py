@@ -30,10 +30,10 @@ convertAvgsToCsv()
 ranked = read_matches()
 
 
-"""def loadImageFromUrl(url):
+def loadImageFromUrl(url):
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
-    return img"""
+    return img
 
 
 columnOrder = [
