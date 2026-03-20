@@ -414,7 +414,7 @@ with tab3:
         # 0: Cannot contain A, B, or C
         [
             "Kate Basun",
-            "Sanjay Agrawal",
+            ":violet[Sanjay Agrawal]",
             "Peter Matos",
             "Dominic Nicol",
             "Michael Jennings",
