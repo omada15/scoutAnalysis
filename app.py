@@ -461,7 +461,7 @@ with tab3:
         # 5: Cannot contain D or A
         [
             "Shayaan Khan",
-            "Senuth W",
+            '<span style="color:#5C4033">Senuth W</span> ',
             "Aidan Ahn",
             "Wesley Barcomb",
             "Zoe Conway",
@@ -631,7 +631,7 @@ with tab3:
                     allianceColor = "🟦"
                 scouterfont = teamsGroup[matchOrder[match]][i]
                 isScouted = "✅" if scouter != "" else "❌"
-                st.markdown(f"{allianceColor} {selectedTeam} — {isScouted} {scouterfont}")
+                st.markdown(f"{allianceColor} {selectedTeam} — {isScouted} {scouterfont}", unsafe_allow_html=True)
 
 
 with tab4:
