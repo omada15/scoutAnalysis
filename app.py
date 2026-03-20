@@ -91,6 +91,7 @@ numericGradientColumns = [
 
 
 def loadAndFlattenData(filePath):
+
     try:
         with open(filePath, "r") as f:
             fullData = json.load(f)
@@ -201,6 +202,7 @@ with tab0:
     displayAllianceSection(getAllianceTable(blueSel), "Blue", "blue")
 
 with tab1:
+    
     if allRows:
         df = pd.DataFrame(allRows)
         allKeys = set(df.columns)
@@ -441,7 +443,7 @@ with tab3:
         # 3: Cannot contain C or D
         [
             "Matthew McGrath",
-            "Sam Meng",
+            ":rainbow[Sam Meng]",
             "Daniel Senchukov",
             "William Ding",
             ":yellow[Estiaan Kruger]",
@@ -627,9 +629,9 @@ with tab3:
                     allianceColor = "🟥"
                 else:
                     allianceColor = "🟦"
-                st.write(
-                    f"{allianceColor} {selectedTeam} — {"✅ "+scouter if scouter != "" else "❌" + teamsGroup[matchOrder[match]][i]}"
-                )
+                scouterfont = teamsGroup[matchOrder[match]][i]
+                isScouted = "✅" if scouter != "" else "❌"
+                st.markdown(f"{allianceColor} {selectedTeam} — {isScouted} {scouterfont}")
 
 
 with tab4:
